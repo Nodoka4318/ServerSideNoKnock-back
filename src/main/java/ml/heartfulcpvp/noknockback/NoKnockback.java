@@ -14,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 
 public class NoKnockback extends JavaPlugin {
-    private final ProtocolManager protocol = ProtocolLibrary.getProtocolManager();
 
     @Override
     public void onEnable() {
@@ -26,12 +25,15 @@ public class NoKnockback extends JavaPlugin {
             e.printStackTrace();
         }
 
+        var protocol = ProtocolLibrary.getProtocolManager();
+
         protocol.addPacketListener(new PacketAdapter(this,
                 ListenerPriority.NORMAL,
                 PacketType.Play.Server.ENTITY_VELOCITY) {
             @Override
             public void onPacketSending(PacketEvent e) {
                 if (PlayerData.getPlayerData().isEnabled(e.getPlayer())) {
+                    sendInfoMessage(e.getPlayer(), "Cancelling packet..");
                     e.setCancelled(true);
                 }
             }

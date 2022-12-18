@@ -6,6 +6,6 @@ api-version:
 depend: [ProtocolLib]
 
 commands:
-  autocrystal:
+  noknockback:
     description: toggle
     usage: /noknockback
