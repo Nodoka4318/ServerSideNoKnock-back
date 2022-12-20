@@ -3,7 +3,7 @@ A simple module that run on the server side.\
 Created for heartfulcpvp.ml.
 
 ## function
-Denies knocking back when the player enables it.
+cancels player knocking back
 
 
 | command        | function |
