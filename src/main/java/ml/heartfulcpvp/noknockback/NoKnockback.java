@@ -6,12 +6,14 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.injector.server.TemporaryPlayer;
 import ml.heartfulcpvp.noknockback.commands.NoKnockbackCommand;
 import ml.heartfulcpvp.noknockback.playerdata.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,6 +39,10 @@ public class NoKnockback extends JavaPlugin {
                 PacketType.Play.Server.ENTITY_VELOCITY) {
             @Override
             public void onPacketSending(PacketEvent e) {
+                var player = e.getPlayer();
+                if (player instanceof TemporaryPlayer || player == null)
+                    return;
+
                 if (PlayerData.getPlayerData().isEnabled(e.getPlayer())) {
                     if (e.getPacket().getIntegers().read(0) != e.getPlayer().getEntityId())
                         return;
@@ -52,6 +58,10 @@ public class NoKnockback extends JavaPlugin {
                 PacketType.Play.Server.EXPLOSION) {
             @Override
             public void onPacketSending(PacketEvent e) {
+                var player = e.getPlayer();
+                if (player instanceof TemporaryPlayer || player == null)
+                    return;
+
                 if (PlayerData.getPlayerData().isEnabled(e.getPlayer())) {
                     var packet = e.getPacket();
                     // ref: https://wiki.vg/Protocol#Explosion
